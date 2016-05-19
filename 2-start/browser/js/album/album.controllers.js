@@ -69,6 +69,5 @@ juke.controller("albumsCtrl", function($scope, AlbumFactory) {
     AlbumFactory.fetchAll()
         .then(function(data) {
             $scope.albums = data;
-            console.log(data)
         })
 })
