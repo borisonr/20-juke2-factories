@@ -22,11 +22,15 @@ juke.factory('PlayerFactory', function($rootScope) {
             return currentSong
         },
         start: function(song, songList) {
-            currentSong = song;
+
             if (songList) {
                 playFty.currentAlbum = songList;
                 playFty.currentSongIndex = songList.indexOf(song);
             }
+            if (currentSong === song) {
+                return playFty.resume();
+            }
+            currentSong = song;
             playFty.pause();
             audio.src = song.audioUrl;
             audio.load();
@@ -38,8 +42,9 @@ juke.factory('PlayerFactory', function($rootScope) {
             playFty.playing = false;
         },
         resume: function() {
-            audio.play()
             playFty.playing = true;
+            return audio.play();
+
         },
         isPlaying: function() {
             if (playFty.playing) {

@@ -32,12 +32,24 @@ juke.controller('AlbumCtrl', function($scope, $rootScope, $log, AlbumFactory, Pl
     $scope.isSongPlaying = function() {
         return PlayerFactory.playing;
     }
+    $scope.$on("viewSwap", function(event, data) {
+        $scope.showMe = (data.name === "oneAlbum");
 
+    })
 });
 
-juke.controller("albumsCtrl", function($scope, AlbumFactory) {
+juke.controller("albumsCtrl", function($scope, $rootScope, AlbumFactory) {
     AlbumFactory.fetchAll()
         .then(function(data) {
             $scope.albums = data;
         })
+    $scope.$on('viewSwap', function(event, data) {
+        $scope.showMe = (data.name === "allAlbums");
+    });
+    $scope.showAlbum = function(albumId) {
+        $rootScope.$broadcast("viewSwap", {
+            name: "oneAlbum",
+            id: albumId
+        });
+    }
 })

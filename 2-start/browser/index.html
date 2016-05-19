@@ -12,24 +12,25 @@
         <script src="/js/album/album.factory.js" defer></script>
         <script src="/js/player/player.controller.js" defer></script>
         <script src="/js/player/player.factory.js" defer></script>
+        <script src="/js/sidebar/sidebar.controller.js" defer></script>
     </head>
 
     <body ng-app="juke">
         <div id="main" class="container-fluid">
 
-            <div class="col-xs-2">
+            <div class="col-xs-2" ng-controller="SidebarCtrl">
                 <sidebar>
                     <img src="juke.svg" class="logo">
                     <section>
                         <h4 class="menu-item active">
-              <a href="#">ALBUMS</a>
+              <a ng-click="viewAlbums()" href="">ALBUMS</a>
             </h4>
                     </section>
                 </sidebar>
             </div>
 
             <div class="col-xs-10">
-                <div class="album" ng-controller="AlbumCtrl" ng-show="true">
+                <div class="album" ng-controller="AlbumCtrl" ng-show="showMe">
                     <p>
                         <h3>{{album.name }}</h3>
 
@@ -58,10 +59,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div ng-show="false" ng-controller="albumsCtrl">
+                <div ng-show="showMe" ng-controller="albumsCtrl">
                     <h3>Albums</h3>
                     <div class="row">
-                        <div class="col-xs-4" ng-repeat="album in albums">
+                        <div class="col-xs-4" ng-repeat="album in albums" ng-click="showAlbum(album.id)">
                             <a class="thumbnail" href="">
                                 <img ng-src="/api/albums/{{album.id}}/image">
 
