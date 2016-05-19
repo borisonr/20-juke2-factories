@@ -64,3 +64,27 @@ juke.controller('AlbumCtrl', function($scope, $rootScope, $log, AlbumFactory) {
     };
 
 });
+
+juke.controller("albumsCtrl", function($scope, AlbumFactory) {
+    AlbumFactory.fetchAll()
+        .then(function(data) {
+            $scope.albums = data;
+            console.log(data[0])
+        })
+})
+
+
+// AlbumFactory.fetchAll()
+//     .then(function(data) {
+//         return AlbumFactory.fetchById(data)
+//     })
+//     .then(function(album) {
+//         album.imageUrl = '/api/albums/' + album.id + '/image';
+//         album.songs.forEach(function(song, i) {
+//             song.audioUrl = '/api/songs/' + song.id + '/audio';
+//             song.albumIndex = i;
+//         });
+//
+//         $scope.album = album;
+//     })
+//     .catch($log.error); // $log service can be turned on and off; also, pre-bound
