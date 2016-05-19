@@ -3,40 +3,46 @@
 juke.factory('PlayerFactory', function($rootScope) {
     // non-UI logic in here
     var audio = document.createElement('audio');
-    var currentAlbum = null;
     var currentSong = null;
-    var currentSongIndex = null;
-    var playing = false;
     var progress = 0;
     audio.addEventListener('timeupdate', function() {
         progress = audio.currentTime / audio.duration;
         $rootScope.$digest();
     });
+    audio.addEventListener('ended', function() {
+        this.next();
+        $rootScope.digest()
+    });
 
-
-    return {
+    var playFty = {
+        playing: false,
+        currentAlbum: null,
+        currentSongIndex: null,
+        get currentSong() {
+            return currentSong
+        },
         start: function(song, songList) {
             currentSong = song;
             if (songList) {
-                currentAlbum = songList;
-                currentSongIndex = songList.indexOf(song);
+                playFty.currentAlbum = songList;
+                playFty.currentSongIndex = songList.indexOf(song);
             }
-            this.pause();
+            playFty.pause();
             audio.src = song.audioUrl;
             audio.load();
             audio.play();
-            playing = true;
+            playFty.playing = true;
         },
         pause: function() {
             audio.pause();
-            playing = false;
+            playFty.playing = false;
         },
         resume: function() {
             audio.play()
-            playing = true;
+            playFty.playing = true;
         },
         isPlaying: function() {
-            if (playing) {
+            if (playFty.playing) {
                 return true;
             }
             return false;
@@ -46,25 +52,26 @@ juke.factory('PlayerFactory', function($rootScope) {
         },
         next: function() {
             var nextSong;
-            if (currentSongIndex === currentAlbum.length - 1) {
-                nextSong = currentAlbum[0];
+            if (playFty.currentSongIndex === playFty.currentAlbum.length - 1) {
+                nextSong = playFty.currentAlbum[0];
             } else {
-                nextSong = currentAlbum[currentSongIndex + 1];
+                nextSong = playFty.currentAlbum[playFty.currentSongIndex + 1];
             }
-            this.start(nextSong, currentAlbum);
+            this.start(nextSong, playFty.currentAlbum);
         },
         previous: function() {
             var nextSong;
-            if (currentSongIndex === 0) {
-                nextSong = currentAlbum[currentAlbum.length - 1];
+            if (playFty.currentSongIndex === 0) {
+                nextSong = playFty.currentAlbum[playFty.currentAlbum.length - 1];
             } else {
-                nextSong = currentAlbum[currentSongIndex - 1];
+                nextSong = playFty.currentAlbum[playFty.currentSongIndex - 1];
             }
-            this.start(nextSong, currentAlbum);
+            this.start(nextSong, playFty.currentAlbum);
         },
         getProgress: function() {
             return progress;
         }
 
     }
+    return playFty;
 });

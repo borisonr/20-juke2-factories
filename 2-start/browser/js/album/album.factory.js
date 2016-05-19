@@ -1,6 +1,6 @@
 'use strict';
 
-juke.factory("AlbumFactory", function($http) {
+juke.factory("AlbumFactory", function($http, $log) {
     return {
         fetchAll: function() {
             return $http.get('/api/albums/')
