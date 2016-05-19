@@ -1,0 +1,33 @@
+<html >
+	<head>
+		<script src="/node_modules/angular/angular.js"></script>
+		<script src="/client.js"></script>
+	</head>
+	<body ng-app="obama">
+
+		<div ng-controller="PostController">
+
+				<button ng-click="changeName()"> Change my name </button>
+				<p>{{firstName}}</p>
+<!-- 
+				<div ng-repeat="k in songs">
+					<h1>{{k.name}}</h1>
+					<h3>{{k.artist}}</h3>
+
+				</div>
+ -->				
+
+			<div ng-controller="RandomController">
+
+				{{firstName}}
+
+				<input ng-model="firstName"/>
+
+			</div>
+
+		</div>
+
+
+
+	</body>
+</html>
